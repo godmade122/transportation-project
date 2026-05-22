@@ -413,9 +413,10 @@
 /* partner section */
 .part{
      max-width: 1400px;
+     margin: auto;
 }
 .partner-container{
-    width: 100%;
+    /* width: 100%; */
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
@@ -791,7 +792,7 @@
     }
     .terms{ 
     margin-top: 15px;
-    font-size: 25px;
+    font-size: 15px;
     }
      .footer-all{
     display: grid;

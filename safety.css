@@ -151,6 +151,7 @@
     padding: 30px;
 }
 .safety-hero{
+    width: 100%;
     max-width: 600px;
     color: white;
 }
@@ -363,7 +364,6 @@
 }
 .command-left{
     flex: 1;
-    min-width: 320px;
 }
 .command-left h1{
     font-size: 45px;
@@ -409,7 +409,7 @@ span{
 }
 .command-right{
     flex: 1;
-    min-width: 340px;
+    /* min-width: 340px; */
     position: relative;
     border-radius: 30px;
     overflow: hidden;
@@ -532,14 +532,18 @@ span{
     }
 /* Gold section */
 .gold-section{
-    background-color: #F3F4F5;
-    padding: 40px;
+    /* background-color: #F3F4F5; */
+    /* padding: 40px; */
+    max-width: 1400px;
+    margin: auto;
 }
 
 .content-container {
     display: flex;
     flex-wrap: wrap;
     border-radius: 25px;
+    /* padding: 40px; */
+    /* width: 100%; */
 }
 
 .left-card{
@@ -605,9 +609,8 @@ span{
  }
 .right-content{
     flex: 1;
-    min-width: 350px;
     background-color: white;
-    width: 420px;
+    /* width: 420px; */
     /* padding: 40px 35px; */
     padding: 70px;
     border-top-right-radius: 25px;
@@ -701,7 +704,7 @@ span{
 }
 .right-content1{
     flex: 1;
-    min-width: 320px;
+    /* min-width: 320px; */
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 70px 60px;
@@ -926,8 +929,7 @@ span{
         line-height: 1.4;
     }
     .gold-section{
-    background-color: #F3F4F5;
-    padding: 40px;
+        padding: 40px;
     }
 
     .content-container {
@@ -1003,7 +1005,7 @@ span{
     }
 
     .safety-hero h3{
-        font-size: 50px;
+        font-size: 28px;
     }
     .safety-hero p{
         font-weight: 25px;
@@ -1038,7 +1040,7 @@ span{
     grid-template-columns: 1fr;
     }
     .command-left h1{
-        font-size: 30px;
+        font-size: 25px;
         font-weight: 600;
         margin-bottom: 20px;
     }
@@ -1118,6 +1120,16 @@ span{
     }
     .support-item span{
         font-size: 26px;
+    }
+    .right-content{
+    flex: 1;
+    /* min-width: 350px; */
+    /* width: 420px; */ 
+        padding: 20px;
+    }
+    .right-content1{
+    display: grid;
+    grid-template-columns: 1fr;
     }
     .credential-grid{
         display: grid;
