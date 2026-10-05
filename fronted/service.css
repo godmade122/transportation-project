@@ -903,7 +903,7 @@
     }
 
     .safety-hero h3{
-        font-size: 50px;
+        font-size: 30px;
     }
     .safety-hero p{
         font-weight: 25px;
@@ -917,7 +917,7 @@
     
     .elite-container .left-side{
         width: 100%;
-        margin-top: 10px;
+        margin-top: 30px;
     }
     .top-text h1{
     font-size: 30px;
@@ -938,7 +938,7 @@
     display: grid;
     grid-template-columns: 1fr;
     }
-     .standard-container{
+    .standard-container{
         display: grid;
         grid-template-columns: 1fr;
     }
@@ -946,11 +946,16 @@
         display: flex;
         justify-content: center;
     }
-     .footer-all{
+    .act-btn button{
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+    .footer-all{
     display: grid;
     grid-template-columns: 1fr;
     /* gap: 40px; */
     }
+
     .footer-links{
         display: grid;
         grid-template-columns: 1fr;
