@@ -1,36 +1,3 @@
-// if(isLoggedIn()){
-//   location.href="events.html";
-// }
-
-// const form = document.getElementById("registerForm");
-// form.addEventListener("submit", async(e)=> {
-//   e.preventDefault();
-//   const body={
-//     fullname: document.getElementById("fullname").value,
-//     email: document.getElementById("email").value,
-//     password: document.getElementById("password").value
-//   };
-
-//   const response = await fetch(`${API_BASE_URL}/auth/register`,
-//     {
-//       method:"POST",
-//       headers:{
-//         "Content-Type": "application/json"
-//       },
-//       body:JSON.stringify(body)
-//     }
-//   );
-
-//   const data = await response.json();
-//   alert(data.message);
-
-//   if(response.ok){
-//     location.href="login.html";
-//   }
-// });
-
-const API_URL = "http://localhost:5000/api";
-
 // Get the registration form
 const registerForm = document.getElementById("registerForm");
 

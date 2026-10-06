@@ -1,5 +1,3 @@
-const API_URL = "http://localhost:5000/api";
-
 // Get login form
 const loginForm = document.getElementById("loginform");
 

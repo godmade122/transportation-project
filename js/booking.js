@@ -1,5 +1,3 @@
-const API_URL = "http://localhost:5000/api";
-
 const bookingForm = document.getElementById("bookingForm");
 
 const rideTypeSelect = document.getElementById("rideType");
