@@ -1,1 +1,0 @@
-// const API_BASE_URL = "https://eventhub-api-t394.onrender.com/api";
