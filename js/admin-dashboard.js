@@ -3,9 +3,7 @@
 function requireAdmin() {
 
   const token = localStorage.getItem("token");
-
   const userData = localStorage.getItem("user");
-
 
   if (!token || !userData) {
 
@@ -17,9 +15,7 @@ function requireAdmin() {
 
   }
 
-
   let user;
-
 
   try {
 
@@ -30,7 +26,6 @@ function requireAdmin() {
     console.error("Invalid user data:", error);
 
     localStorage.removeItem("token");
-
     localStorage.removeItem("user");
 
     window.location.href = "login.html";
@@ -38,7 +33,6 @@ function requireAdmin() {
     return false;
 
   }
-
 
   if (user.role !== "admin") {
 
@@ -49,7 +43,6 @@ function requireAdmin() {
     return false;
 
   }
-
 
   return true;
 
@@ -66,64 +59,47 @@ const token = localStorage.getItem("token");
 const pricesContainer =
   document.getElementById("pricesContainer");
 
-
 const adminBookingsContainer =
-  document.getElementById(
-    "adminBookingsContainer"
-  );
-
+  document.getElementById("adminBookingsContainer");
 
 const totalPrices =
   document.getElementById("totalPrices");
 
-
 const totalBookings =
   document.getElementById("totalBookings");
-
 
 const pendingBookings =
   document.getElementById("pendingBookings");
 
-
 const paidBookings =
   document.getElementById("paidBookings");
-
 
 const addPriceBtn =
   document.getElementById("addPriceBtn");
 
-
 const priceModal =
   document.getElementById("priceModal");
-
 
 const closeModal =
   document.getElementById("closeModal");
 
-
 const priceForm =
   document.getElementById("priceForm");
-
 
 const priceId =
   document.getElementById("priceId");
 
-
 const priceRideType =
   document.getElementById("priceRideType");
-
 
 const priceAmount =
   document.getElementById("priceAmount");
 
-
 const modalTitle =
   document.getElementById("modalTitle");
 
-
 const logoutBtn =
   document.getElementById("logoutBtn");
-
 
 const adminName =
   document.getElementById("adminName");
@@ -152,15 +128,12 @@ function displayAdminName() {
   const userData =
     localStorage.getItem("user");
 
-
   if (!userData) return;
-
 
   try {
 
     const user =
       JSON.parse(userData);
-
 
     if (adminName) {
 
@@ -170,7 +143,6 @@ function displayAdminName() {
         "Admin";
 
     }
-
 
   } catch (error) {
 
@@ -193,7 +165,7 @@ async function loadPrices() {
     const response =
       await fetch(
 
-        `${API_URL}/prices`,
+        `${API_URL}/api/prices`,
 
         {
 
@@ -205,10 +177,8 @@ async function loadPrices() {
 
       );
 
-
     const data =
       await response.json();
-
 
     if (!response.ok) {
 
@@ -221,13 +191,10 @@ async function loadPrices() {
 
     }
 
-
     const prices =
       data.prices || [];
 
-
     displayPrices(prices);
-
 
     if (totalPrices) {
 
@@ -236,14 +203,12 @@ async function loadPrices() {
 
     }
 
-
   } catch (error) {
 
     console.error(
       "Load prices error:",
       error
     );
-
 
     if (pricesContainer) {
 
@@ -270,7 +235,6 @@ async function loadPrices() {
 
 function displayPrices(prices) {
 
-
   if (!prices || prices.length === 0) {
 
     pricesContainer.innerHTML = `
@@ -291,19 +255,14 @@ function displayPrices(prices) {
 
   }
 
-
   pricesContainer.innerHTML =
     prices.map((price) => `
 
       <div class="price-card">
 
-
         <h3>
-
           ${price.rideType}
-
         </h3>
-
 
         <p class="price">
 
@@ -313,9 +272,7 @@ function displayPrices(prices) {
 
         </p>
 
-
         <div class="price-actions">
-
 
           <button
             class="edit-price-btn"
@@ -323,29 +280,21 @@ function displayPrices(prices) {
             data-ride-type="${price.rideType}"
             data-amount="${price.amount}"
           >
-
             Edit Price
-
           </button>
-
 
           <button
             class="delete-price-btn"
             data-id="${price._id}"
           >
-
             Delete Price
-
           </button>
 
-
         </div>
-
 
       </div>
 
     `).join("");
-
 
 
   // EDIT BUTTON EVENTS
@@ -354,7 +303,6 @@ function displayPrices(prices) {
     document.querySelectorAll(
       ".edit-price-btn"
     );
-
 
   editButtons.forEach((button) => {
 
@@ -378,14 +326,12 @@ function displayPrices(prices) {
   });
 
 
-
   // DELETE BUTTON EVENTS
 
   const deleteButtons =
     document.querySelectorAll(
       ".delete-price-btn"
     );
-
 
   deleteButtons.forEach((button) => {
 
@@ -419,7 +365,6 @@ if (addPriceBtn) {
 
       modalTitle.textContent =
         "Add New Price";
-
 
       priceModal.style.display =
         "flex";
@@ -476,14 +421,11 @@ if (priceForm) {
 
       event.preventDefault();
 
-
       const rideType =
         priceRideType.value.trim();
 
-
       const amount =
         Number(priceAmount.value);
-
 
       if (!rideType) {
 
@@ -495,7 +437,6 @@ if (priceForm) {
 
       }
 
-
       if (!amount || amount <= 0) {
 
         alert(
@@ -506,11 +447,9 @@ if (priceForm) {
 
       }
 
-
       try {
 
         let response;
-
 
         // UPDATE PRICE
 
@@ -519,7 +458,7 @@ if (priceForm) {
           response =
             await fetch(
 
-              `${API_URL}/prices/${priceId.value}`,
+              `${API_URL}/api/prices/${priceId.value}`,
 
               {
 
@@ -540,7 +479,6 @@ if (priceForm) {
 
         }
 
-
         // CREATE PRICE
 
         else {
@@ -548,7 +486,7 @@ if (priceForm) {
           response =
             await fetch(
 
-              `${API_URL}/prices`,
+              `${API_URL}/api/prices`,
 
               {
 
@@ -569,10 +507,8 @@ if (priceForm) {
 
         }
 
-
         const data =
           await response.json();
-
 
         if (!response.ok) {
 
@@ -584,7 +520,6 @@ if (priceForm) {
           );
 
         }
-
 
         if (priceId.value) {
 
@@ -600,19 +535,14 @@ if (priceForm) {
 
         }
 
-
         priceModal.style.display =
           "none";
 
-
         priceForm.reset();
-
 
         priceId.value = "";
 
-
         loadPrices();
-
 
       } catch (error) {
 
@@ -620,7 +550,6 @@ if (priceForm) {
           "Price error:",
           error
         );
-
 
         alert(error.message);
 
@@ -644,18 +573,14 @@ function editPrice(
   priceId.value =
     id;
 
-
   priceRideType.value =
     rideType;
-
 
   priceAmount.value =
     amount;
 
-
   modalTitle.textContent =
     "Edit Price";
-
 
   priceModal.style.display =
     "flex";
@@ -672,20 +597,18 @@ async function deletePrice(id) {
       "Are you sure you want to delete this price?"
     );
 
-
   if (!confirmDelete) {
 
     return;
 
   }
 
-
   try {
 
     const response =
       await fetch(
 
-        `${API_URL}/prices/${id}`,
+        `${API_URL}/api/prices/${id}`,
 
         {
 
@@ -697,10 +620,8 @@ async function deletePrice(id) {
 
       );
 
-
     const data =
       await response.json();
-
 
     if (!response.ok) {
 
@@ -713,16 +634,11 @@ async function deletePrice(id) {
 
     }
 
-
     alert(
       "Price deleted successfully!"
     );
 
-
-    // RELOAD PRICES
-
     loadPrices();
-
 
   } catch (error) {
 
@@ -730,7 +646,6 @@ async function deletePrice(id) {
       "Delete price error:",
       error
     );
-
 
     alert(
 
@@ -753,7 +668,7 @@ async function loadBookings() {
     const response =
       await fetch(
 
-        `${API_URL}/bookings`,
+        `${API_URL}/api/bookings`,
 
         {
 
@@ -765,10 +680,8 @@ async function loadBookings() {
 
       );
 
-
     const data =
       await response.json();
-
 
     if (!response.ok) {
 
@@ -781,10 +694,8 @@ async function loadBookings() {
 
     }
 
-
     const bookings =
       data.bookings || [];
-
 
     displayBookings(bookings);
 
@@ -797,7 +708,6 @@ async function loadBookings() {
         bookings.length;
 
     }
-
 
     if (pendingBookings) {
 
@@ -816,7 +726,6 @@ async function loadBookings() {
 
     }
 
-
     if (paidBookings) {
 
       paidBookings.textContent =
@@ -834,14 +743,12 @@ async function loadBookings() {
 
     }
 
-
   } catch (error) {
 
     console.error(
       "Load bookings error:",
       error
     );
-
 
     if (adminBookingsContainer) {
 
@@ -868,7 +775,6 @@ async function loadBookings() {
 
 function displayBookings(bookings) {
 
-
   if (!bookings || bookings.length === 0) {
 
     adminBookingsContainer.innerHTML = `
@@ -890,135 +796,89 @@ function displayBookings(bookings) {
 
   }
 
-
   adminBookingsContainer.innerHTML =
     bookings.map((booking) => {
-
 
       let formattedDate =
         "Not available";
 
+      // CORRECT FIELD: travelDate
 
-      if (booking.bookingDate) {
+      if (booking.travelDate) {
 
         formattedDate =
           new Date(
-            booking.bookingDate
+            booking.travelDate
           ).toLocaleDateString(
             "en-NG"
           );
 
       }
 
-
       const price =
         Number(
           booking.price || 0
         );
 
-
       return `
 
         <div class="booking-card">
 
-
           <div class="booking-header">
 
-
             <h3>
-
               ${booking.rideType || "Ride"}
-
             </h3>
 
-
             <span class="booking-status">
-
               ${booking.status || "pending"}
-
             </span>
 
-
           </div>
-
 
           <div class="booking-details">
 
-
             <p>
-
               <strong>Pickup:</strong>
-
               ${booking.pickupLocation || "Not available"}
-
             </p>
 
-
             <p>
-
               <strong>Destination:</strong>
-
               ${booking.destination || "Not available"}
-
             </p>
 
-
             <p>
-
               <strong>Date:</strong>
-
               ${formattedDate}
-
             </p>
 
-
             <p>
-
               <strong>Time:</strong>
-
-              ${booking.bookingTime || "Not available"}
-
+              ${booking.travelTime || "Not available"}
             </p>
 
-
             <p>
-
               <strong>Passengers:</strong>
-
               ${booking.passengers || "Not available"}
-
             </p>
 
-
             <p>
-
               <strong>Price:</strong>
-
               ₦${price.toLocaleString("en-NG")}
-
             </p>
 
-
             <p>
-
               <strong>Booking Status:</strong>
-
               ${booking.status || "pending"}
-
             </p>
-
 
             <p>
-
               <strong>Payment:</strong>
-
               ${booking.paymentStatus || "pending"}
-
             </p>
-
 
           </div>
-
 
         </div>
 
@@ -1037,12 +897,10 @@ if (logoutBtn) {
     "click",
     () => {
 
-
       const confirmLogout =
         confirm(
           "Are you sure you want to logout?"
         );
-
 
       if (!confirmLogout) {
 
@@ -1050,16 +908,13 @@ if (logoutBtn) {
 
       }
 
-
       localStorage.removeItem(
         "token"
       );
 
-
       localStorage.removeItem(
         "user"
       );
-
 
       window.location.href =
         "login.html";
@@ -1074,19 +929,15 @@ if (logoutBtn) {
 
 function initializeAdminDashboard() {
 
-
   if (!requireAdmin()) {
 
     return;
 
   }
 
-
   displayAdminName();
 
-
   loadPrices();
-
 
   loadBookings();
 

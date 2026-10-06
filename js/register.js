@@ -8,11 +8,8 @@ registerForm.addEventListener("submit", async (event) => {
 
   // Get form values
   const name = document.getElementById("fullname").value.trim();
-
   const email = document.getElementById("email").value.trim();
-
   const password = document.getElementById("password").value;
-
 
   // Basic validation
   if (!name || !email || !password) {
@@ -20,19 +17,17 @@ registerForm.addEventListener("submit", async (event) => {
     return;
   }
 
-
   // Password validation
   if (password.length < 6) {
     alert("Password must be at least 6 characters.");
     return;
   }
 
-
   try {
     console.log("Sending registration request...");
 
     const response = await fetch(
-      `${API_URL}/auth/register`,
+      `${API_URL}/api/auth/register`,
       {
         method: "POST",
 
@@ -48,27 +43,9 @@ registerForm.addEventListener("submit", async (event) => {
       }
     );
 
-
     const data = await response.json();
 
-    console.log("Registration response:", 
-    data);
-//     const contentType = response.headers.get("content-type");
-
-// let data;
-
-// if (contentType && contentType.includes("application/json")) {
-//   data = await response.json();
-// } else {
-//   const text = await response.text();
-
-//   console.error("Server returned non-JSON:", text);
-
-//   throw new Error(
-//     "Server error. Check your backend terminal."
-//   );
-// }
-
+    console.log("Registration response:", data);
 
     // Registration failed
     if (!response.ok) {
@@ -76,7 +53,6 @@ registerForm.addEventListener("submit", async (event) => {
         data.message || "Registration failed"
       );
     }
-
 
     alert("Account created successfully! Please login.");
 
@@ -86,7 +62,6 @@ registerForm.addEventListener("submit", async (event) => {
     // Redirect to login page
     window.location.href = "login.html";
 
-
   } catch (error) {
     console.error("Registration error:", error);
 
@@ -94,5 +69,4 @@ registerForm.addEventListener("submit", async (event) => {
       error.message || "Something went wrong."
     );
   }
-
 });

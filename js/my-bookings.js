@@ -16,12 +16,13 @@ if (!token) {
 
 
 // LOAD MY BOOKINGS
+
 async function loadMyBookings() {
 
   try {
 
     const response = await fetch(
-      `${API_URL}/bookings/my-bookings`,
+      `${API_URL}/api/bookings/my-bookings`,
       {
         method: "GET",
 
@@ -83,6 +84,7 @@ async function loadMyBookings() {
 
 
     // DISPLAY BOOKINGS
+
     bookings.forEach((booking) => {
 
       const bookingCard =
@@ -95,6 +97,7 @@ async function loadMyBookings() {
 
 
       // FORMAT DATE
+
       let formattedDate =
         "Not available";
 
@@ -117,6 +120,7 @@ async function loadMyBookings() {
 
 
       // FORMAT PRICE
+
       const formattedPrice =
         Number(
           booking.price || 0
@@ -124,6 +128,7 @@ async function loadMyBookings() {
 
 
       // DISPLAY BOOKING
+
       bookingCard.innerHTML = `
 
         <div class="booking-header">
@@ -131,7 +136,6 @@ async function loadMyBookings() {
           <h3>
             ${booking.rideType}
           </h3>
-
 
           <span class="booking-status">
 
@@ -143,7 +147,6 @@ async function loadMyBookings() {
 
 
         <div class="booking-details">
-
 
           <p>
 
@@ -209,7 +212,6 @@ async function loadMyBookings() {
 
 
           ${
-
             booking.paymentStatus === "pending"
 
               ? `
@@ -311,18 +313,16 @@ async function payNow(bookingId) {
 
     const response = await fetch(
 
-      `${API_URL}/payment/initialize/${bookingId}`,
+      `${API_URL}/api/payment/initialize/${bookingId}`,
 
       {
 
         method: "POST",
 
-
         headers: {
 
           "Content-Type":
             "application/json",
-
 
           "Authorization":
             `Bearer ${token}`

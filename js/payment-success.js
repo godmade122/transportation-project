@@ -11,7 +11,6 @@ const params = new URLSearchParams(
 
 const reference = params.get("reference");
 
-
 console.log(
   "Payment reference:",
   reference
@@ -54,8 +53,7 @@ if (!reference) {
 
 async function verifyPayment() {
 
-  const token =
-    localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
 
   if (!token) {
@@ -107,7 +105,7 @@ async function verifyPayment() {
 
     const response = await fetch(
 
-      `${API_URL}/payment/verify?reference=${reference}`,
+      `${API_URL}/api/payment/verify?reference=${encodeURIComponent(reference)}`,
 
       {
 
@@ -115,8 +113,7 @@ async function verifyPayment() {
 
         headers: {
 
-          "Authorization":
-            `Bearer ${token}`
+          "Authorization": `Bearer ${token}`
 
         }
 
@@ -125,17 +122,14 @@ async function verifyPayment() {
     );
 
 
-    const data =
-      await response.json();
+    const data = await response.json();
 
 
     if (!response.ok) {
 
       throw new Error(
-
         data.message ||
         "Payment verification failed."
-
       );
 
     }
@@ -152,60 +146,39 @@ async function verifyPayment() {
     paymentSuccessContainer.innerHTML = `
 
       <div class="success-icon">
-
         ✓
-
       </div>
-
 
       <h2>Payment Successful!</h2>
 
-
       <p>
-
         Your payment has been successfully verified.
-
       </p>
-
 
       <div class="payment-details">
 
         <p>
-
           <strong>Payment Status:</strong>
-
           Paid
-
         </p>
 
-
         <p>
-
           <strong>Booking ID:</strong>
-
           ${data.bookingId}
-
         </p>
 
-
         <p>
-
           <strong>Reference:</strong>
-
           ${reference}
-
         </p>
 
       </div>
-
 
       <a
         href="my-bookings.html"
         class="view-bookings-btn"
       >
-
         View My Bookings
-
       </a>
 
     `;
@@ -227,21 +200,15 @@ async function verifyPayment() {
           Payment Verification Failed
         </h2>
 
-
         <p>
-
           ${error.message}
-
         </p>
-
 
         <a
           href="my-bookings.html"
           class="view-bookings-btn"
         >
-
           Back to My Bookings
-
         </a>
 
       </div>
