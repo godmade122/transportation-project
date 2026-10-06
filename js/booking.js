@@ -1,8 +1,12 @@
 let prices = [];
 
+
+// ===============================
 // GET PRICES FROM BACKEND
+// ===============================
 async function loadPrices() {
   try {
+
     const response = await fetch(
       `${API_URL}/api/prices`
     );
@@ -20,150 +24,311 @@ async function loadPrices() {
     console.log("Prices loaded:", prices);
 
   } catch (error) {
-    console.error("Error loading prices:", error);
+
+    console.error(
+      "Error loading prices:",
+      error
+    );
+
   }
 }
 
 
+// ===============================
 // BOOKING FORM
-const bookingForm = document.getElementById("bookingForm");
+// ===============================
+const bookingForm =
+  document.getElementById("bookingForm");
 
-bookingForm.addEventListener("submit", async (event) => {
+bookingForm.addEventListener(
+  "submit",
+  async (event) => {
 
-  // VERY IMPORTANT: stop the page from reloading
-  event.preventDefault();
+    event.preventDefault();
 
-  console.log("Booking form submitted");
+    console.log("Booking form submitted");
 
-  const token = localStorage.getItem("token");
 
-  if (!token) {
-    alert("Please login before booking a ride.");
-    window.location.href = "login.html";
-    return;
-  }
+    const token =
+      localStorage.getItem("token");
 
-  const rideType =
-    document.getElementById("rideType").value;
+    if (!token) {
 
-  const pickupLocation =
-    document.getElementById("pickupLocation").value.trim();
+      alert(
+        "Please login before booking a ride."
+      );
 
-  const destination =
-    document.getElementById("destination").value.trim();
+      window.location.href =
+        "login.html";
 
-  const travelDate =
-    document.getElementById("travelDate").value;
+      return;
+    }
 
-  const travelTime =
-    document.getElementById("travelTime").value;
 
-  const passengers =
-    Number(document.getElementById("passengers").value);
+    const rideType =
+      document.getElementById(
+        "rideType"
+      ).value;
 
-  if (
-    !rideType ||
-    !pickupLocation ||
-    !destination ||
-    !travelDate ||
-    !travelTime ||
-    !passengers
-  ) {
-    alert("Please fill in all booking details.");
-    return;
-  }
+    const pickupLocation =
+      document.getElementById(
+        "pickupLocation"
+      ).value.trim();
 
-  try {
+    const destination =
+      document.getElementById(
+        "destination"
+      ).value.trim();
 
-    console.log("Creating booking...");
+    const travelDate =
+      document.getElementById(
+        "travelDate"
+      ).value;
 
-    const response = await fetch(
-      `${API_URL}/api/bookings`,
-      {
-        method: "POST",
+    const travelTime =
+      document.getElementById(
+        "travelTime"
+      ).value;
 
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
+    const passengers =
+      Number(
+        document.getElementById(
+          "passengers"
+        ).value
+      );
 
-        body: JSON.stringify({
-          rideType,
-          pickupLocation,
-          destination,
-          travelDate,
-          travelTime,
-          passengers
-        })
+
+    // ===============================
+    // FIND PRICE FOR SELECTED RIDE
+    // ===============================
+
+    const selectedPrice =
+      prices.find(
+        (price) =>
+          price.name === rideType ||
+          price.rideType === rideType
+      );
+
+
+    if (!selectedPrice) {
+
+      alert(
+        "Price for this ride type was not found."
+      );
+
+      console.error(
+        "Available prices:",
+        prices
+      );
+
+      return;
+    }
+
+
+    const priceId =
+      selectedPrice._id;
+
+
+    // Put price ID inside hidden input
+    document.getElementById(
+      "priceId"
+    ).value = priceId;
+
+
+    console.log(
+      "Selected price:",
+      selectedPrice
+    );
+
+    console.log(
+      "Price ID:",
+      priceId
+    );
+
+
+    if (
+      !rideType ||
+      !pickupLocation ||
+      !destination ||
+      !travelDate ||
+      !travelTime ||
+      !passengers
+    ) {
+
+      alert(
+        "Please fill in all booking details."
+      );
+
+      return;
+    }
+
+
+    try {
+
+      console.log(
+        "Creating booking..."
+      );
+
+
+      const response =
+        await fetch(
+          `${API_URL}/api/bookings`,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              "Authorization":
+                `Bearer ${token}`
+            },
+
+            body: JSON.stringify({
+
+              rideType,
+
+              pickupLocation,
+
+              destination,
+
+              travelDate,
+
+              travelTime,
+
+              passengers,
+
+              priceId
+
+            })
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      console.log(
+        "Booking response:",
+        data
+      );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Failed to create booking."
+        );
+
       }
-    );
 
-    const data = await response.json();
 
-    console.log("Booking response:", data);
+      // ===============================
+      // HIDE FORM
+      // ===============================
 
-    if (!response.ok) {
-      throw new Error(
-        data.message || "Failed to create booking."
-      );
-    }
+      bookingForm.style.display =
+        "none";
 
-    // Hide booking form
-    bookingForm.style.display = "none";
 
-    // Show success section
-    const bookingResult =
-      document.getElementById("bookingResult");
+      // ===============================
+      // SHOW SUCCESS
+      // ===============================
 
-    bookingResult.style.display = "block";
+      const bookingResult =
+        document.getElementById(
+          "bookingResult"
+        );
 
-    // Display price
-    const bookingPrice =
-      document.getElementById("bookingPrice");
+      bookingResult.style.display =
+        "block";
 
-    const totalAmount =
-      data.totalAmount ||
-      data.booking?.totalAmount ||
-      data.price ||
-      data.booking?.price ||
-      0;
 
-    bookingPrice.textContent =
-      `₦${Number(totalAmount).toLocaleString()}`;
+      // ===============================
+      // DISPLAY PRICE
+      // ===============================
 
-    // Save booking ID for payment
-    if (data.booking?._id) {
-      localStorage.setItem(
-        "lastBookingId",
+      const bookingPrice =
+        document.getElementById(
+          "bookingPrice"
+        );
+
+
+      const totalAmount =
+        data.totalAmount ||
+        data.booking?.totalAmount ||
+        data.price ||
+        data.booking?.price ||
+        selectedPrice.amount ||
+        0;
+
+
+      bookingPrice.textContent =
+        `₦${Number(
+          totalAmount
+        ).toLocaleString()}`;
+
+
+      // ===============================
+      // SAVE BOOKING ID
+      // ===============================
+
+      if (
+        data.booking &&
         data.booking._id
-      );
-    } else if (data.bookingId) {
-      localStorage.setItem(
-        "lastBookingId",
+      ) {
+
+        localStorage.setItem(
+          "lastBookingId",
+          data.booking._id
+        );
+
+      } else if (
         data.bookingId
+      ) {
+
+        localStorage.setItem(
+          "lastBookingId",
+          data.bookingId
+        );
+
+      }
+
+
+      alert(
+        "Booking created successfully!"
       );
+
+
+    } catch (error) {
+
+      console.error(
+        "Booking error:",
+        error
+      );
+
+      alert(
+        error.message ||
+        "Something went wrong while creating your booking."
+      );
+
     }
 
-    alert("Booking created successfully!");
-
-  } catch (error) {
-
-    console.error(
-      "Booking error:",
-      error
-    );
-
-    alert(
-      error.message ||
-      "Something went wrong while creating your booking."
-    );
   }
-});
+);
 
 
+// ===============================
 // PROCEED TO PAYMENT
+// ===============================
+
 const proceedPayment =
-  document.getElementById("proceedPayment");
+  document.getElementById(
+    "proceedPayment"
+  );
+
 
 if (proceedPayment) {
 
@@ -172,19 +337,34 @@ if (proceedPayment) {
     () => {
 
       const bookingId =
-        localStorage.getItem("lastBookingId");
+        localStorage.getItem(
+          "lastBookingId"
+        );
+
 
       if (!bookingId) {
-        alert("Booking ID not found.");
+
+        alert(
+          "Booking ID not found."
+        );
+
         return;
       }
 
+
       window.location.href =
-        `my-bookings.html?bookingId=${encodeURIComponent(bookingId)}`;
+        `my-bookings.html?bookingId=${encodeURIComponent(
+          bookingId
+        )}`;
+
     }
   );
+
 }
 
 
-// LOAD PRICES WHEN PAGE OPENS
+// ===============================
+// LOAD PRICES
+// ===============================
+
 loadPrices();
