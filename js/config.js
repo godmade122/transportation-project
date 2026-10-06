@@ -1,1 +1,1 @@
-const API_BASE_URL = "https://transportation-backend-k9gu.onrender.com";
+const API_URL = "https://transportation-backend-k9gu.onrender.com";
